@@ -1,3 +1,5 @@
+package com.deepshooter.moviesapp.domain.repository
+
 import androidx.datastore.preferences.core.Preferences
 import com.deepshooter.moviesapp.domain.model.FavoriteMovieId
 import kotlinx.coroutines.flow.Flow

@@ -1,3 +1,5 @@
+package com.deepshooter.moviesapp.domain.repository
+
 import com.deepshooter.moviesapp.domain.model.Movie
 
 
