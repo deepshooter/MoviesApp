@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">MoviesApp</string>
+
+    <!-- Errors -->
+    <string name="loading_error_text">Something went wrong!</string>
+    <string name="loading_error_content_description">Loading error</string>
+
 </resources>
