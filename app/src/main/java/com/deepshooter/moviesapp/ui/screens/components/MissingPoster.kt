@@ -17,7 +17,7 @@ fun MissingPoster(
     modifier: Modifier = Modifier
 ) {
     Image(
-        painter = painterResource(id = R.drawable.missing_poster),
+        painter = painterResource(id = R.drawable.no_poster),
         contentDescription = stringResource(id = R.string.loading_error_content_description),
         contentScale = ContentScale.Crop,
         modifier = modifier
