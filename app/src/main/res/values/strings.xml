@@ -7,5 +7,6 @@
 
     <!-- Components -->
     <string name="search_bar_label">Search…</string>
+    <string name="movie_poster_content_description">Movie poster</string>
 
 </resources>
