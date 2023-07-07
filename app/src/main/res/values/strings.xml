@@ -5,4 +5,7 @@
     <string name="loading_error_text">Something went wrong!</string>
     <string name="loading_error_content_description">Loading error</string>
 
+    <!-- Components -->
+    <string name="search_bar_label">Search…</string>
+
 </resources>
