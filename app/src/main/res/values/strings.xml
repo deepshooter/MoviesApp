@@ -9,4 +9,9 @@
     <string name="search_bar_label">Search…</string>
     <string name="movie_poster_content_description">Movie poster</string>
 
+    <!-- MoviesScreen -->
+    <string name="ms_trending_title">Trending Movies</string>
+    <string name="ms_popular_title">Popular Movies</string>
+    <string name="ms_upcoming_title">Upcoming Movies</string>
+
 </resources>
