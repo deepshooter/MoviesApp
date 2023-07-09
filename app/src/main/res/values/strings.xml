@@ -17,4 +17,10 @@
     <string name="ms_popular_title">Popular Movies</string>
     <string name="ms_upcoming_title">Upcoming Movies</string>
 
+    <!-- Navigation -->
+    <string name="nav_title_movies">Movies</string>
+    <string name="nav_title_favorites">Favorites</string>
+    <string name="nav_title_profile">Profile</string>
+    <string name="nav_title_details">Details</string>
+
 </resources>
