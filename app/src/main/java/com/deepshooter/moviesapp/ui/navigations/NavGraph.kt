@@ -214,39 +214,38 @@ fun MoviesScreenGraph(navController: NavHostController = rememberAnimatedNavCont
             }
         }
     }
+}
 
+@Composable
+fun BottomNavBar(navController: NavHostController, modifier: Modifier = Modifier) {
 
-    @Composable
-    fun BottomNavBar(navController: NavHostController, modifier: Modifier = Modifier) {
+    val navBackStackEntry = navController.currentBackStackEntryAsState()
+    val currentDestination = navBackStackEntry.value?.destination?.route
 
-        val navBackStackEntry = navController.currentBackStackEntryAsState()
-        val currentDestination = navBackStackEntry.value?.destination?.route
+    Box(modifier.background(MaterialTheme.colorScheme.primary)) {
+        NavigationBar(containerColor = Color.Transparent) {
 
-        Box(modifier.background(MaterialTheme.colorScheme.primary)) {
-            NavigationBar(containerColor = Color.Transparent) {
-
-                Destinations.navScreenList.forEach { screen ->
-                    if (screen.title != null && screen.icon != null) {
-                        NavigationBarItem(
-                            label = { Text(stringResource(screen.title), fontFamily = GoogleSans) },
-                            icon = {
-                                Icon(
-                                    imageVector = screen.icon,
-                                    contentDescription = stringResource(screen.title)
-                                )
-                            },
-                            selected = currentDestination == screen.route || currentDestination == screen.subRoute,
-                            onClick = {
-                                navController.navigate(screen.route) {
-                                    popUpTo(navController.graph.findStartDestination().id) {
-                                        saveState = true
-                                    }
-                                    launchSingleTop = true
-                                    restoreState = true
+            Destinations.navScreenList.forEach { screen ->
+                if (screen.title != null && screen.icon != null) {
+                    NavigationBarItem(
+                        label = { Text(stringResource(screen.title), fontFamily = GoogleSans) },
+                        icon = {
+                            Icon(
+                                imageVector = screen.icon,
+                                contentDescription = stringResource(screen.title)
+                            )
+                        },
+                        selected = currentDestination == screen.route || currentDestination == screen.subRoute,
+                        onClick = {
+                            navController.navigate(screen.route) {
+                                popUpTo(navController.graph.findStartDestination().id) {
+                                    saveState = true
                                 }
+                                launchSingleTop = true
+                                restoreState = true
                             }
-                        )
-                    }
+                        }
+                    )
                 }
             }
         }
