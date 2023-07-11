@@ -12,6 +12,7 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
@@ -21,6 +22,8 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.deepshooter.moviesapp.domain.model.Movie
+import com.deepshooter.moviesapp.ui.screens.favoriteMovies.FavoriteMoviesScreen
+import com.deepshooter.moviesapp.ui.screens.favoriteMovies.FavoriteMoviesViewModel
 import com.deepshooter.moviesapp.ui.screens.movies.MoviesScreen
 import com.deepshooter.moviesapp.ui.screens.movies.MoviesViewModel
 import com.deepshooter.moviesapp.ui.screens.moviesDetails.MovieDetailsScreen
@@ -37,6 +40,7 @@ import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 fun NavGraph(navController: NavHostController) {
     AnimatedNavHost(navController = navController, startDestination = Destinations.Movies.route) {
         composable(Destinations.Movies.route) { MoviesScreenGraph() }
+        composable(Destinations.Favorites.route) { FavoriteScreenGraph() }
     }
 }
 
@@ -212,6 +216,183 @@ fun MoviesScreenGraph(navController: NavHostController = rememberAnimatedNavCont
                     }
                 )
             }
+        }
+    }
+}
+
+
+@OptIn(ExperimentalAnimationApi::class)
+@Composable
+fun FavoriteScreenGraph(navController: NavHostController = rememberAnimatedNavController()) {
+
+    AnimatedNavHost(
+        navController = navController,
+        startDestination = Destinations.FavoritesDiscover.route
+    ) {
+
+        //FavoriteMovies
+        composable(
+            Destinations.FavoritesDiscover.route,
+            enterTransition = {
+                when (initialState.destination.route) {
+                    Destinations.FavoritesDetails.route ->
+                        slideIntoContainer(
+                            AnimatedContentTransitionScope.SlideDirection.Left,
+                            animationSpec = tween(700)
+                        )
+
+                    else -> null
+                }
+            },
+            exitTransition = {
+                when (targetState.destination.route) {
+                    Destinations.FavoritesDetails.route ->
+                        slideOutOfContainer(
+                            AnimatedContentTransitionScope.SlideDirection.Left,
+                            animationSpec = tween(700)
+                        )
+
+                    else -> null
+                }
+            },
+            popEnterTransition = {
+                when (initialState.destination.route) {
+                    Destinations.FavoritesDetails.route ->
+                        slideIntoContainer(
+                            AnimatedContentTransitionScope.SlideDirection.Right,
+                            animationSpec = tween(700)
+                        )
+
+                    else -> null
+                }
+            },
+            popExitTransition = {
+                when (targetState.destination.route) {
+                    Destinations.FavoritesDetails.route ->
+                        slideOutOfContainer(
+                            AnimatedContentTransitionScope.SlideDirection.Right,
+                            animationSpec = tween(700)
+                        )
+
+                    else -> null
+                }
+            }
+        ) {
+
+            val favoriteMoviesViewModel = hiltViewModel<FavoriteMoviesViewModel>()
+            val favoriteMoviesUiState =
+                favoriteMoviesViewModel
+                    .favoriteMoviesUiState
+                    .collectAsStateWithLifecycle(initialValue = ScreenUiState.Loading).value
+            val searchedMoviesUiStateList =
+                favoriteMoviesViewModel
+                    .searchedMoviesUiState
+                    .collectAsStateWithLifecycle(initialValue = ScreenUiState.Loading).value
+
+            FavoriteMoviesScreen(
+                navigateToDetails = { movieId: Int ->
+                    navController.navigate("FavoriteDetailsScreen/$movieId") {
+                        popUpTo(navController.graph.findStartDestination().id) {
+                            saveState = true
+                        }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+                },
+                favoriteMoviesUiState = favoriteMoviesUiState,
+                searchedMoviesUiStateList = searchedMoviesUiStateList,
+                setSearchedMoviesList = { searchTerm: String ->
+                    favoriteMoviesViewModel.setSearchedMoviesList(
+                        searchTerm
+                    )
+                }
+            )
+        }
+
+        //FavoriteMoviesDetails
+        composable(
+            Destinations.FavoritesDetails.route,
+            enterTransition = {
+                when (initialState.destination.route) {
+                    Destinations.FavoritesDiscover.route ->
+                        slideIntoContainer(
+                            AnimatedContentTransitionScope.SlideDirection.Left,
+                            animationSpec = tween(700)
+                        )
+
+                    else -> null
+                }
+            },
+            exitTransition = {
+                when (targetState.destination.route) {
+                    Destinations.FavoritesDiscover.route ->
+                        slideOutOfContainer(
+                            AnimatedContentTransitionScope.SlideDirection.Left,
+                            animationSpec = tween(700)
+                        )
+
+                    else -> null
+                }
+            },
+            popEnterTransition = {
+                when (initialState.destination.route) {
+                    Destinations.FavoritesDiscover.route ->
+                        slideIntoContainer(
+                            AnimatedContentTransitionScope.SlideDirection.Right,
+                            animationSpec = tween(700)
+                        )
+
+                    else -> null
+                }
+            },
+            popExitTransition = {
+                when (targetState.destination.route) {
+                    Destinations.FavoritesDiscover.route ->
+                        slideOutOfContainer(
+                            AnimatedContentTransitionScope.SlideDirection.Right,
+                            animationSpec = tween(700)
+                        )
+
+                    else -> null
+                }
+            }
+        ) {
+
+            val movieDetailsViewModel = hiltViewModel<MovieDetailsViewModel>()
+            val movieIdArg = it.arguments?.getString("movieId")?.toInt()
+            val movieDetailsUiState =
+                movieDetailsViewModel
+                    .movieDetailUiState
+                    .collectAsState(initial = ScreenUiState.Loading).value
+            val isMovieFavorite =
+                movieDetailsViewModel
+                    .isMovieFavorite
+                    .collectAsStateWithLifecycle(initialValue = false).value
+
+            movieIdArg?.let {
+                LaunchedEffect(movieIdArg) {
+                    movieDetailsViewModel.setMovieDetails(movieIdArg)
+                    movieDetailsViewModel.refreshIsMovieFavorite(movieIdArg)
+                }
+            }
+
+            MovieDetailsScreen(
+                popBackStack = {
+                    navController.popBackStack()
+                },
+                movieDetailsUiState = movieDetailsUiState,
+                isMovieFavorite = isMovieFavorite,
+                addFavoriteMovie = { movie: Movie ->
+                    movieDetailsViewModel.addFavoriteMovie(
+                        movie
+                    )
+                },
+                removeFavoriteMovie = { movie: Movie ->
+                    movieDetailsViewModel.removeFavoriteMovie(
+                        movie
+                    )
+                },
+            )
         }
     }
 }
