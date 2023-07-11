@@ -23,4 +23,7 @@
     <string name="nav_title_profile">Profile</string>
     <string name="nav_title_details">Details</string>
 
+    <!-- FavoriteMoviesScreen -->
+    <string name="fms_empty_favorite_list_text">Your favorite movies list is empty!</string>
+
 </resources>
