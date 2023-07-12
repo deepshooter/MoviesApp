@@ -1,5 +1,7 @@
 package com.deepshooter.moviesapp.ui.navigations
 
+import android.content.Context
+import android.net.Uri
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
@@ -19,6 +21,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.deepshooter.moviesapp.domain.model.Movie
@@ -28,6 +31,8 @@ import com.deepshooter.moviesapp.ui.screens.movies.MoviesScreen
 import com.deepshooter.moviesapp.ui.screens.movies.MoviesViewModel
 import com.deepshooter.moviesapp.ui.screens.moviesDetails.MovieDetailsScreen
 import com.deepshooter.moviesapp.ui.screens.moviesDetails.MovieDetailsViewModel
+import com.deepshooter.moviesapp.ui.screens.userProfile.UserProfileScreen
+import com.deepshooter.moviesapp.ui.screens.userProfile.UserProfileViewModel
 import com.deepshooter.moviesapp.ui.theme.GoogleSans
 import com.deepshooter.moviesapp.util.ScreenUiState
 import com.google.accompanist.navigation.animation.AnimatedNavHost
@@ -41,6 +46,7 @@ fun NavGraph(navController: NavHostController) {
     AnimatedNavHost(navController = navController, startDestination = Destinations.Movies.route) {
         composable(Destinations.Movies.route) { MoviesScreenGraph() }
         composable(Destinations.Favorites.route) { FavoriteScreenGraph() }
+        profileScreen()
     }
 }
 
@@ -394,6 +400,46 @@ fun FavoriteScreenGraph(navController: NavHostController = rememberAnimatedNavCo
                 },
             )
         }
+    }
+}
+
+@OptIn(ExperimentalAnimationApi::class)
+fun NavGraphBuilder.profileScreen() {
+    composable(Destinations.Profile.route) {
+
+        val userProfileViewModel = hiltViewModel<UserProfileViewModel>()
+        val userNameUiState =
+            userProfileViewModel
+                .userName
+                .collectAsStateWithLifecycle(initialValue = ScreenUiState.Loading).value
+        val profilePictureUriUiState =
+            userProfileViewModel
+                .profilePictureUri
+                .collectAsStateWithLifecycle(initialValue = ScreenUiState.Loading).value
+        val profileBackgroundUriUiState =
+            userProfileViewModel
+                .profileBackgroundUri
+                .collectAsStateWithLifecycle(initialValue = ScreenUiState.Loading).value
+        val userFavoriteMoviesQuantityUiState =
+            userProfileViewModel
+                .userFavoriteMoviesQuantity
+                .collectAsStateWithLifecycle(initialValue = ScreenUiState.Loading).value
+
+        UserProfileScreen(
+            userNameUiState = userNameUiState,
+            profilePictureUriUiState = profilePictureUriUiState,
+            profileBackgroundUriUiState = profileBackgroundUriUiState,
+            userFavoriteMoviesQuantityUiState = userFavoriteMoviesQuantityUiState,
+            setUserName = { userName: String ->
+                userProfileViewModel.setUserName(userName)
+            },
+            setProfilePicture = { context: Context, profilePictureUri: Uri ->
+                userProfileViewModel.setProfilePictureUri(context, profilePictureUri)
+            },
+            setProfileBackground = { context: Context, profileBackgroundUri: Uri ->
+                userProfileViewModel.setBackgroundPictureUri(context, profileBackgroundUri)
+            }
+        )
     }
 }
 

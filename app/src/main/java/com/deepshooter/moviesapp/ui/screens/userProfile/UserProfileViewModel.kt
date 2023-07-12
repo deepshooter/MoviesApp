@@ -10,6 +10,7 @@ import com.deepshooter.moviesapp.data.local.internaldir.copyFileToInternalDir
 import com.deepshooter.moviesapp.data.local.internaldir.getFileUriFromInternalDir
 import com.deepshooter.moviesapp.domain.repository.UserRepository
 import com.deepshooter.moviesapp.util.ScreenUiState
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -19,6 +20,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
+@HiltViewModel
 class UserProfileViewModel @Inject constructor(
     private val userRepository: UserRepository
 ) : ViewModel() {
