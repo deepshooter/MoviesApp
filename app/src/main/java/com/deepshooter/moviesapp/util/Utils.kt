@@ -1,5 +1,10 @@
 package com.deepshooter.moviesapp.util
 
+import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.ImageDecoder
+import android.os.Build
+import android.provider.MediaStore
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
@@ -16,6 +21,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.unit.IntSize
+import androidx.core.net.toUri
 import com.deepshooter.moviesapp.ui.theme.DarkGrey
 
 
@@ -47,3 +53,14 @@ fun Modifier.shimmerEffect(): Modifier = composed {
             size = it.size
         }
 }
+
+fun getBitMap(context: Context, pictureUri: String): Bitmap =
+    if (Build.VERSION.SDK_INT < 28) {
+        MediaStore.Images
+            .Media.getBitmap(context.contentResolver, pictureUri.toUri())
+
+    } else {
+        val source = ImageDecoder
+            .createSource(context.contentResolver, pictureUri.toUri())
+        ImageDecoder.decodeBitmap(source)
+    }

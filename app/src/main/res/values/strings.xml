@@ -26,4 +26,18 @@
     <!-- FavoriteMoviesScreen -->
     <string name="fms_empty_favorite_list_text">Your favorite movies list is empty!</string>
 
+
+    <!-- UserProfileScreen -->
+    <string name="ups_default_profile_picture">Default profile picture</string>
+    <string name="ups_profile_picture">Profile picture</string>
+    <string name="ups_change_profile_background">Change profile background</string>
+    <string name="ups_change_profile_picture">Change profile picture</string>
+    <string name="ups_edit_username">Edit username</string>
+    <string name="ups_enter_your_username">Enter your username</string>
+    <string name="ups_confirm_dialog">OK</string>
+    <string name="ups_cancel_dialog">Cancel</string>
+    <string name="ups_favorite_movies">Favorite Movies</string>
+    <string name="ups_background_picture">Background picture</string>
+    <string name="ups_default_username">Username</string>
+
 </resources>
