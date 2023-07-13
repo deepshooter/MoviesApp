@@ -2,8 +2,8 @@ package com.deepshooter.moviesapp.ui.navigations
 
 import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Movie
 import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.deepshooter.moviesapp.R
@@ -22,7 +22,7 @@ sealed class Destinations(
         "MoviesScreen",
         "MoviesDiscoverScreen",
         R.string.nav_title_movies,
-        Icons.Default.PlayArrow
+        Icons.Default.Movie
     )
 
     object MoviesDiscover : Destinations(
