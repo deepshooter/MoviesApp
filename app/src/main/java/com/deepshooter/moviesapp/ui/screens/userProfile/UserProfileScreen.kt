@@ -210,10 +210,11 @@ fun ProfilePicture(
             contentDescription = stringResource(R.string.ups_change_profile_picture),
             tint = MaterialTheme.colorScheme.surface,
             modifier = Modifier
+                .size(40.dp)
                 .background(MaterialTheme.colorScheme.onSurface, CircleShape)
                 .border(3.dp, MaterialTheme.colorScheme.surface, CircleShape)
                 .align(Alignment.BottomEnd)
-                .padding(16.dp)
+                .padding(10.dp)
                 .clickable { galleryActivityLauncher.launch("image/*") }
         )
     }
