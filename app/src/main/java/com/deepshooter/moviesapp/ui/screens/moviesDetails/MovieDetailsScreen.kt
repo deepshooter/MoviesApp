@@ -329,10 +329,10 @@ fun UserScore(voteAverage: Float, modifier: Modifier = Modifier) {
     Row(modifier.padding(top = 10.dp)) {
         CircularProgressBar(
             percentage = voteAverage,
-            fontSize = 20.sp,
-            radius = 30.dp
+            fontSize = 16.sp,
+            radius = 24.dp
         )
-        Spacer(modifier = modifier.width(12.dp))
+        Spacer(modifier = modifier.width(10.dp))
         UserScoreText()
     }
 }
@@ -347,7 +347,7 @@ fun UserScoreText(modifier: Modifier = Modifier) {
             Text(
                 text = it,
                 color = MaterialTheme.colorScheme.onSurface,
-                style = MaterialTheme.typography.titleLarge.copy(
+                style = MaterialTheme.typography.titleMedium.copy(
                     fontWeight = FontWeight.Bold
                 )
             )
@@ -387,7 +387,7 @@ fun FavoriteIcon(
 ) {
     Box(
         modifier
-            .size(80.dp)
+            .size(60.dp)
             .clickable(indication = rememberRipple(
                 radius = 32.dp,
                 color = MaterialTheme.colorScheme.primary.copy(alpha = 0.4f)
@@ -399,7 +399,7 @@ fun FavoriteIcon(
             imageVector = iconType,
             contentDescription = null,
             tint = Yellow,
-            modifier = modifier.size(80.dp)
+            modifier = modifier.size(60.dp)
         )
     }
 }
